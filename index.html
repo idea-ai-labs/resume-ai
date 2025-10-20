@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ResumeGenie</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+    textarea { width: 100%; height: 200px; }
+    select, button { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>ResumeGenie</h1>
+  <p>Paste your resume text below:</p>
+  <textarea id="resumeText"></textarea>
+  <br>
+  <label for="template">Choose template:</label>
+  <select id="template">
+    <option>Classic</option>
+    <option>Modern</option>
+    <option>Tech</option>
+    <option>Sleek (2-col)</option>
+    <option>Sleek (single-col)</option>
+    <option>Compact</option>
+  </select>
+  <br>
+  <button onclick="generatePDF()">Generate PDF</button>
+  <p id="status"></p>
+  <a id="downloadLink" href="" target="_blank" style="display:none;">Download PDF</a>
+
+  <script>
+    async function generatePDF() {
+      const text = document.getElementById('resumeText').value;
+      const template = document.getElementById('template').value;
+      const status = document.getElementById('status');
+      const link = document.getElementById('downloadLink');
+      status.textContent = "Generating...";
+      link.style.display = "none";
+
+      try {
+        const response = await fetch("https://YOUR_SPACE_NAME.hf.space/run/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data: [text, template] })
+        });
+        const result = await response.json();
+        // assuming Hugging Face returns a URL for the PDF
+        const pdfUrl = result.data[0];
+        if (pdfUrl) {
+          link.href = pdfUrl;
+          link.style.display = "inline";
+          link.textContent = "Download PDF";
+          status.textContent = "✅ PDF generated!";
+        } else {
+          status.textContent = "❌ Failed to generate PDF";
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = "❌ Error calling the API";
+      }
+    }
+  </script>
+</body>
+</html>
