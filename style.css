@@ -1,181 +1,203 @@
-/* ---------- Global Styles ---------- */
-* {
-  box-sizing: border-box;
-  font-family: "Inter", "Helvetica", sans-serif;
+/* Global styles */
+body {
+  font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  background: #f8f9fa;
+  color: #333;
 }
 
-body {
-  background: #f7f8fa;
-  color: #222;
-  font-size: 16px;
-  line-height: 1.5;
-  padding: 0;
-}
-
-/* ---------- Layout ---------- */
 .container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  padding: 1rem;
 }
 
 h1 {
   text-align: center;
-  font-size: 1.8em;
-  margin-bottom: 20px;
-  color: #1f2937;
+  margin-bottom: 2rem;
 }
 
+/* Section styling */
 .section {
-  margin-bottom: 30px;
-  background: #fff;
+  margin-bottom: 1rem;
   border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.section h2 {
-  font-size: 1.2em;
-  color: #111827;
-  margin-bottom: 10px;
-}
-
-/* ---------- Input Fields ---------- */
-input,
-textarea,
-select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 15px;
-  margin-bottom: 12px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-}
-
-/* ---------- Grid Layout ---------- */
-.fields-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 10px;
-}
-
-/* ---------- Cards ---------- */
-.cards {
+.section-header {
+  background: linear-gradient(135deg, #4b6cb7, #182848);
+  color: #fff;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 1.1rem;
   display: flex;
-  flex-direction: column;
-  gap: 15px;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.card {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 15px;
-  position: relative;
-}
-
-.card h3 {
-  margin-bottom: 8px;
-  font-size: 1em;
-  color: #374151;
-}
-
-.remove-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: none;
-  border: none;
-  color: #ef4444;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-/* ---------- Buttons ---------- */
-.add-btn,
-.generate-btn {
-  width: 100%;
-  background-color: #2563eb;
-  color: white;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-.add-btn:hover,
-.generate-btn:hover {
-  background-color: #1d4ed8;
-}
-
-.add-btn:active,
-.generate-btn:active {
-  transform: scale(0.98);
-}
-
-.add-btn {
-  background-color: #3b82f6;
-  margin-top: 10px;
-}
-
-/* ---------- Misc ---------- */
-.center {
-  text-align: center;
-}
-
-@media (max-width: 600px) {
-  .container {
-    padding: 15px;
-  }
-
-  .section {
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5em;
-  }
-}
-
-#spinner-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  background: rgba(0,0,0,0.5);
+.toggle-icon {
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.toggle-icon:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.section-content {
+  padding: 1rem;
+  display: block;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+  max-height: 2000px; /* large default for smooth expand */
+}
+
+.section-content.collapsed {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.card {
+  background: #fefefe;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.card.enter {
+  transform: scale(0.95);
+  opacity: 0;
+  animation: card-enter 0.2s forwards;
+}
+
+@keyframes card-enter {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.card input, .card textarea {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+.card textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Buttons */
+.add-btn, .remove-btn, .generate-btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.add-btn {
+  background: #e0e0e0;
+  color: #333;
+}
+.add-btn:hover {
+  background: #d0d0d0;
+}
+
+.remove-btn {
+  background: #ffcccc;
+  color: #900;
+}
+.remove-btn:hover {
+  background: #ffb3b3;
+}
+
+.generate-btn {
+  background: #28a745; /* green */
   color: white;
+  width: 100%;
+  font-size: 1.1rem;
+}
+.generate-btn:hover {
+  background: #218838;
+}
+
+/* Debug log */
+.debug {
+  margin-top: 1.5rem;
+}
+#log-box {
+  width: 100%;
+  height: 200px;
+  font-size: 0.9rem;
+  background: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 8px;
+  resize: vertical;
+  font-family: monospace;
+}
+
+/* Spinner overlay */
+#spinner-overlay {
+  position: fixed;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
 }
 
 .spinner-container {
-  text-align: center;
+  background:white;
+  padding:2rem;
+  border-radius:10px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1rem;
 }
 
 .spinner {
-  border: 6px solid #ddd;
-  border-top: 6px solid #4CAF50;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width:40px;
+  height:40px;
+  border:5px solid #ccc;
+  border-top:5px solid #4b6cb7;
+  border-radius:50%;
   animation: spin 1s linear infinite;
-  margin: 0 auto 10px;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% { transform:rotate(0deg); }
+  100% { transform:rotate(360deg); }
 }
