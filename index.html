@@ -7,15 +7,15 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1>🚀 NextGen Resume Lab</h1>
-    <p>Build, Customize & Export Your Professional Resume</p>
-  </header>
-
   <div class="container">
+    <header>
+      <h1>🚀 NextGen Resume Lab</h1>
+      <p>Build, Customize & Export Your Professional Resume.</p>
+    </header>
+
     <!-- Basic Info -->
-    <section class="section">
-      <div class="section-header" onclick="toggleSection(this)">
+    <section class="section" id="basic-info-section">
+      <div class="section-header">
         <h2><span class="toggle-icon">−</span> Basic Info</h2>
       </div>
       <div class="section-content">
@@ -27,8 +27,8 @@
     </section>
 
     <!-- Education -->
-    <section class="section">
-      <div class="section-header" onclick="toggleSection(this)">
+    <section class="section" id="education-section">
+      <div class="section-header">
         <h2><span class="toggle-icon">−</span> Education</h2>
       </div>
       <div class="section-content">
@@ -38,8 +38,8 @@
     </section>
 
     <!-- Experience -->
-    <section class="section">
-      <div class="section-header" onclick="toggleSection(this)">
+    <section class="section" id="experience-section">
+      <div class="section-header">
         <h2><span class="toggle-icon">−</span> Experience</h2>
       </div>
       <div class="section-content">
@@ -49,8 +49,8 @@
     </section>
 
     <!-- Projects -->
-    <section class="section">
-      <div class="section-header" onclick="toggleSection(this)">
+    <section class="section" id="projects-section">
+      <div class="section-header">
         <h2><span class="toggle-icon">−</span> Projects</h2>
       </div>
       <div class="section-content">
@@ -60,8 +60,8 @@
     </section>
 
     <!-- Skills -->
-    <section class="section">
-      <div class="section-header" onclick="toggleSection(this)">
+    <section class="section" id="skills-section">
+      <div class="section-header">
         <h2><span class="toggle-icon">−</span> Skills</h2>
       </div>
       <div class="section-content">
@@ -70,12 +70,12 @@
       </div>
     </section>
 
-    <!-- Generate PDF -->
+    <!-- Actions -->
     <div class="actions">
       <button id="generate-btn" class="generate-btn">Generate PDF</button>
     </div>
 
-    <!-- Debug Log -->
+    <!-- Debug -->
     <section class="debug">
       <h3>Debug Log</h3>
       <textarea id="log-box" readonly></textarea>
