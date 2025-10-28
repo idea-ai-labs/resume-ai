@@ -68,168 +68,153 @@ const defaultResumeData = {
   ]
 };
 
-// ------------------------------
-// Debug Panel
-// ------------------------------
+// ------------------ Debug Log ------------------
 function logDebug(message) {
-  const panel = document.getElementById("debugPanel");
-  if (!panel) return;
-  const timestamp = new Date().toLocaleTimeString();
-  panel.textContent += `[${timestamp}] ${message}\n`;
-  panel.scrollTop = panel.scrollHeight;
+  const logBox = document.getElementById("log-box");
+  logBox.value += message + "\n";
+  logBox.scrollTop = logBox.scrollHeight;
 }
 
-// ------------------------------
-// Section Add Functions
-// ------------------------------
-function addEducation(data = {}) {
-  const container = document.getElementById('education-container');
-  if (!container) return;
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <input type="text" placeholder="School" value="${data.school || ''}">
-    <input type="text" placeholder="Location" value="${data.location || ''}">
-    <input type="text" placeholder="Degree" value="${data.degree || ''}">
-    <input type="text" placeholder="Dates" value="${data.dates || ''}">
-    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">✖</button>
-  `;
-  container.appendChild(card);
+// ------------------ Utility to create inputs ------------------
+function createInput(value, placeholder, onChange) {
+  const input = document.createElement("input");
+  input.value = value || "";
+  input.placeholder = placeholder;
+  input.oninput = (e) => onChange(e.target.value);
+  return input;
 }
 
-function addExperience(data = {}) {
-  const container = document.getElementById('experience-container');
-  if (!container) return;
-  const card = document.createElement('div');
-  card.className = 'card';
-  const details = data.details ? data.details.join("\n") : "";
-  card.innerHTML = `
-    <input type="text" placeholder="Job Title" value="${data.title || ''}">
-    <input type="text" placeholder="Company" value="${data.company || ''}">
-    <input type="text" placeholder="Location" value="${data.location || ''}">
-    <input type="text" placeholder="Dates" value="${data.dates || ''}">
-    <textarea placeholder="Details (one per line)">${details}</textarea>
-    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">✖</button>
-  `;
-  container.appendChild(card);
-}
-
-function addProject(data = {}) {
-  const container = document.getElementById('projects-container');
-  if (!container) return;
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <input type="text" placeholder="Project Title" value="${data.title || ''}">
-    <textarea placeholder="Description">${data.description || ''}</textarea>
-    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">✖</button>
-  `;
-  container.appendChild(card);
-}
-
-function addSkill(data = {}) {
-  const container = document.getElementById('skills-container');
-  if (!container) return;
-  const card = document.createElement('div');
-  card.className = 'card';
-  card.innerHTML = `
-    <input type="text" placeholder="Category (e.g. Languages)" value="${data.category || ''}">
-    <input type="text" placeholder="Items (comma-separated)" value="${data.items ? data.items.join(', ') : ''}">
-    <button type="button" class="remove-btn" onclick="this.parentNode.remove()">✖</button>
-  `;
-  container.appendChild(card);
-}
-
-// ------------------------------
-// Prefill Defaults
-// ------------------------------
-window.addEventListener("DOMContentLoaded", () => {
-  try {
-    logDebug("Prefilling default resume data...");
-
-    const setIf = (id, value) => {
-      const el = document.getElementById(id);
-      if (el) el.value = value || "";
-    };
-
-    setIf("name", defaultResumeData.name);
-    setIf("email", defaultResumeData.contact?.email || "");
-    setIf("phone", defaultResumeData.contact?.phone || "");
-    setIf("website", defaultResumeData.contact?.website || "");
-
-    defaultResumeData.education.forEach(addEducation);
-    defaultResumeData.experience.forEach(addExperience);
-    defaultResumeData.projects.forEach(addProject);
-    defaultResumeData.skills.forEach(addSkill);
-
-    logDebug("Default resume data prefilling complete.");
-  } catch (err) {
-    console.error("Error during prefill:", err);
-    logDebug(`Error during prefill: ${err}`);
-  }
-});
-
-// ------------------------------
-// Collect Data from UI
-// ------------------------------
-function collectResumeData() {
-  const data = {
-    name: document.getElementById('name')?.value.trim() || "",
-    contact: {
-      email: document.getElementById('email')?.value.trim() || "",
-      phone: document.getElementById('phone')?.value.trim() || "",
-      website: document.getElementById('website')?.value.trim() || ""
-    },
-    education: Array.from(document.querySelectorAll('#education-container .card')).map(c => {
-      const inputs = c.querySelectorAll('input');
-      return {
-        school: inputs[0]?.value || "",
-        location: inputs[1]?.value || "",
-        degree: inputs[2]?.value || "",
-        dates: inputs[3]?.value || ""
-      };
-    }),
-    experience: Array.from(document.querySelectorAll('#experience-container .card')).map(c => {
-      const inputs = c.querySelectorAll('input, textarea');
-      return {
-        title: inputs[0]?.value || "",
-        company: inputs[1]?.value || "",
-        location: inputs[2]?.value || "",
-        dates: inputs[3]?.value || "",
-        details: inputs[4]?.value.split("\n").filter(d => d.trim())
-      };
-    }),
-    projects: Array.from(document.querySelectorAll('#projects-container .card')).map(c => {
-      const inputs = c.querySelectorAll('input, textarea');
-      return {
-        title: inputs[0]?.value || "",
-        description: inputs[1]?.value || ""
-      };
-    }),
-    skills: Array.from(document.querySelectorAll('#skills-container .card')).map(c => {
-      const inputs = c.querySelectorAll('input');
-      return {
-        category: inputs[0]?.value || "",
-        items: inputs[1]?.value.split(",").map(i => i.trim()).filter(Boolean)
-      };
-    })
+// ------------------ Utility to create remove button ------------------
+function createRemoveButton(card) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.textContent = "Remove";
+  btn.className = "remove-btn";
+  btn.onclick = () => {
+    card.style.transition = "all 0.2s ease";
+    card.style.opacity = "0";
+    card.style.transform = "scale(0.95)";
+    setTimeout(() => card.remove(), 200);
   };
-  return data;
+  return btn;
 }
 
-// ------------------------------
-// Generate PDF (Hugging Face Call)
-// ------------------------------
+// ------------------ Education ------------------
+function addEducationCard(data) {
+  const container = document.getElementById("education-cards");
+  const card = document.createElement("div");
+  card.className = "card enter";
+  setTimeout(() => card.classList.remove("enter"), 200);
+
+  const schoolInput = createInput(data?.school, "School Name", val => card.dataset.school = val);
+  const locationInput = createInput(data?.location, "Location", val => card.dataset.location = val);
+  const degreeInput = createInput(data?.degree, "Degree", val => card.dataset.degree = val);
+  const datesInput = createInput(data?.dates, "Dates", val => card.dataset.dates = val);
+
+  card.append(schoolInput, locationInput, degreeInput, datesInput);
+  card.appendChild(createRemoveButton(card));
+  container.appendChild(card);
+}
+
+// ------------------ Experience ------------------
+function addExperienceCard(data) {
+  const container = document.getElementById("experience-cards");
+  const card = document.createElement("div");
+  card.className = "card enter";
+  setTimeout(() => card.classList.remove("enter"), 200);
+
+  const titleInput = createInput(data?.title, "Job Title", val => card.dataset.title = val);
+  const companyInput = createInput(data?.company, "Company", val => card.dataset.company = val);
+  const locationInput = createInput(data?.location, "Location", val => card.dataset.location = val);
+  const datesInput = createInput(data?.dates, "Dates", val => card.dataset.dates = val);
+
+  const detailsInput = document.createElement("textarea");
+  detailsInput.placeholder = "Details (one per line)";
+  detailsInput.value = (data?.details || []).join("\n");
+  detailsInput.oninput = (e) => card.dataset.details = e.target.value.split("\n");
+
+  card.append(titleInput, companyInput, locationInput, datesInput, detailsInput);
+  card.appendChild(createRemoveButton(card));
+  container.appendChild(card);
+}
+
+// ------------------ Projects ------------------
+function addProjectCard(data) {
+  const container = document.getElementById("projects-cards");
+  const card = document.createElement("div");
+  card.className = "card enter";
+  setTimeout(() => card.classList.remove("enter"), 200);
+
+  const titleInput = createInput(data?.title, "Project Title", val => card.dataset.title = val);
+  const descInput = document.createElement("textarea");
+  descInput.placeholder = "Project Description";
+  descInput.value = data?.description || "";
+  descInput.oninput = (e) => card.dataset.description = e.target.value;
+
+  card.append(titleInput, descInput);
+  card.appendChild(createRemoveButton(card));
+  container.appendChild(card);
+}
+
+// ------------------ Skills ------------------
+function addSkillCard(data) {
+  const container = document.getElementById("skills-cards");
+  const card = document.createElement("div");
+  card.className = "card enter";
+  setTimeout(() => card.classList.remove("enter"), 200);
+
+  const categoryInput = createInput(data?.category, "Category", val => card.dataset.category = val);
+  const itemsInput = createInput((data?.items || []).join(", "), "Comma-separated skills", val => card.dataset.items = val.split(",").map(s => s.trim()));
+
+  card.append(categoryInput, itemsInput);
+  card.appendChild(createRemoveButton(card));
+  container.appendChild(card);
+}
+
+// ------------------ Collect Data from UI ------------------
+function collectResumeData() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const phone = document.getElementById("phone").value;
+  const website = document.getElementById("website").value;
+
+  const education = Array.from(document.getElementById("education-cards").children).map(card => ({
+    school: card.children[0].value,
+    location: card.children[1].value,
+    degree: card.children[2].value,
+    dates: card.children[3].value
+  }));
+
+  const experience = Array.from(document.getElementById("experience-cards").children).map(card => ({
+    title: card.children[0].value,
+    company: card.children[1].value,
+    location: card.children[2].value,
+    dates: card.children[3].value,
+    details: card.children[4].value.split("\n")
+  }));
+
+  const projects = Array.from(document.getElementById("projects-cards").children).map(card => ({
+    title: card.children[0].value,
+    description: card.children[1].value
+  }));
+
+  const skills = Array.from(document.getElementById("skills-cards").children).map(card => ({
+    category: card.children[0].value,
+    items: card.children[1].value.split(",").map(s => s.trim())
+  }));
+
+  return { name, contact: { email, phone, website }, education, experience, projects, skills };
+}
+
+// ------------------ Generate PDF ------------------
 async function generatePDF() {
   const resumeData = collectResumeData();
+  logDebug("Sending data to backend...");
+  logDebug("Resume JSON: " + JSON.stringify(resumeData, null, 2));
 
-  // Display endpoint and payload in debug panel
   const API_URL = "https://idea-ai-resumelatex.hf.space/api/generate";
-  logDebug(`📡 Calling endpoint: ${API_URL}`);
-  logDebug("📤 Sending JSON payload:");
-  logDebug(JSON.stringify(resumeData, null, 2));
 
-  // Show spinner overlay
+  // Show spinner
   const spinner = document.createElement("div");
   spinner.id = "spinner-overlay";
   spinner.innerHTML = `
@@ -246,33 +231,51 @@ async function generatePDF() {
       body: JSON.stringify(resumeData)
     });
 
-    logDebug(`📥 Response status: ${response.status}`);
+    logDebug(`Response status: ${response.status}`);
 
     if (!response.ok) {
       const errText = await response.text();
-      logDebug(`❌ Error response: ${errText}`);
+      logDebug(`Error response: ${errText}`);
       alert("❌ Error generating PDF:\n" + errText);
       return;
     }
 
     const blob = await response.blob();
     const url = URL.createObjectURL(blob);
-
     const link = document.createElement("a");
     link.href = url;
     link.download = "resume.pdf";
     document.body.appendChild(link);
     link.click();
     link.remove();
-
     URL.revokeObjectURL(url);
-    logDebug("✅ PDF downloaded successfully.");
-
+    logDebug("PDF downloaded successfully.");
   } catch (error) {
-    console.error("⚠️ Failed to connect:", error);
-    logDebug(`⚠️ Failed to connect: ${error}`);
+    console.error("Failed to connect:", error);
+    logDebug(`Failed to connect: ${error}`);
     alert("⚠️ Failed to connect to backend.\n" + error.message);
   } finally {
     document.getElementById("spinner-overlay")?.remove();
   }
 }
+
+// ------------------ Initialize UI ------------------
+window.onload = () => {
+  document.getElementById("name").value = defaultResumeData.name;
+  document.getElementById("email").value = defaultResumeData.contact.email;
+  document.getElementById("phone").value = defaultResumeData.contact.phone;
+  document.getElementById("website").value = defaultResumeData.contact.website;
+
+  defaultResumeData.education.forEach(addEducationCard);
+  defaultResumeData.experience.forEach(addExperienceCard);
+  defaultResumeData.projects.forEach(addProjectCard);
+  defaultResumeData.skills.forEach(addSkillCard);
+
+  document.getElementById("generate-btn").onclick = generatePDF;
+
+  // Buttons to add new cards
+  document.getElementById("add-education-btn").onclick = () => addEducationCard({});
+  document.getElementById("add-experience-btn").onclick = () => addExperienceCard({});
+  document.getElementById("add-project-btn").onclick = () => addProjectCard({});
+  document.getElementById("add-skill-btn").onclick = () => addSkillCard({});
+};
