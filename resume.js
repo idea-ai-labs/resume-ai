@@ -1,94 +1,67 @@
-// ------------------------------
-// Default Resume Data (John Smith)
-// ------------------------------
+// ------------------ Default Resume Data ------------------
 const defaultResumeData = {
   name: "John Smith",
   contact: {
-    email: "john.smith@outlook.com",
-    phone: "(312) 555-8930",
-    website: "https://linkedin.com/in/johnsmith-marketing"
+    email: "john.smith@example.com",
+    phone: "555-123-4567",
+    website: "https://linkedin.com/in/johnsmith"
   },
   education: [
     {
-      school: "University of Illinois at Urbana-Champaign",
-      location: "Champaign, IL",
-      degree: "Bachelor of Science in Marketing, Minor in Digital Media",
-      dates: "Aug. 2015 – May 2019"
+      school: "University of Modern Tech",
+      location: "San Francisco, CA",
+      degree: "B.Sc. in Information Systems",
+      dates: "Sep. 2015 -- May 2019"
     },
     {
-      school: "Chicago Business Institute",
-      location: "Chicago, IL",
-      degree: "Professional Certificate in Brand Strategy",
-      dates: "Jan. 2020 – Jun. 2020"
+      school: "City College",
+      location: "San Francisco, CA",
+      degree: "Associate's in Computer Science",
+      dates: "Sep. 2013 -- May 2015"
     }
   ],
   experience: [
     {
-      title: "Digital Marketing Manager",
-      company: "Brightline Media Group",
-      location: "Chicago, IL",
-      dates: "Mar. 2021 – Present",
+      title: "Software Engineer",
+      company: "Innovatech Solutions",
+      location: "San Francisco, CA",
+      dates: "June 2019 -- Present",
       details: [
-        "Develop and execute multi-channel digital campaigns increasing client engagement by 35%",
-        "Lead a team of 5 in SEO/SEM, content strategy, and analytics for B2B and consumer clients",
-        "Implemented marketing automation workflows with HubSpot and Salesforce"
+        "Developed scalable web applications using React and Node.js",
+        "Implemented REST APIs and integrated third-party services",
+        "Mentored junior developers and conducted code reviews"
       ]
     },
     {
-      title: "Marketing Associate",
-      company: "NextWave Communications",
-      location: "Chicago, IL",
-      dates: "Jun. 2019 – Feb. 2021",
+      title: "IT Support Specialist",
+      company: "City College",
+      location: "San Francisco, CA",
+      dates: "Jan. 2014 -- May 2015",
       details: [
-        "Supported product launches with email and social campaigns reaching over 200K users",
-        "Coordinated cross-functional content creation with design and product teams",
-        "Analyzed campaign performance using Google Analytics and prepared monthly reports"
+        "Provided tech support to students and faculty",
+        "Maintained computer labs and network systems",
+        "Trained users on software tools and best practices"
       ]
     }
   ],
   projects: [
     {
-      title: "EcoBrand Campaign",
-      description: "Created a sustainability-focused social media campaign that boosted client visibility by 40% within 3 months"
+      title: "TaskMaster Pro",
+      description: "Productivity web app built with React and Node.js for task management"
     },
     {
-      title: "BrandVoice Podcast",
-      description: "Launched and produced a weekly podcast featuring marketing leaders, achieving over 10K monthly listeners"
-    },
-    {
-      title: "Ad Optimization Dashboard",
-      description: "Designed a Google Data Studio dashboard for tracking ad spend efficiency and ROI across 12 clients"
+      title: "DataViz Dashboard",
+      description: "Visualization tool for business analytics using D3.js"
     }
   ],
   skills: [
     {
-      category: "Marketing & Analytics",
-      items: [
-        "SEO/SEM",
-        "Content Strategy",
-        "Email Marketing",
-        "Google Analytics",
-        "HubSpot",
-        "Salesforce Marketing Cloud"
-      ]
+      category: "Languages",
+      items: ["Python", "JavaScript", "SQL", "HTML/CSS"]
     },
     {
-      category: "Creative & Tools",
-      items: [
-        "Adobe Creative Suite (Photoshop, Illustrator, Premiere)",
-        "Canva",
-        "Figma",
-        "Data Visualization (Tableau, Data Studio)"
-      ]
-    },
-    {
-      category: "Soft Skills",
-      items: [
-        "Team Leadership",
-        "Cross-Functional Communication",
-        "Strategic Planning",
-        "Client Relationship Management"
-      ]
+      category: "Frameworks",
+      items: ["React", "Node.js", "Express", "D3.js"]
     }
   ]
 };
@@ -119,34 +92,11 @@ function createRemoveButton(card) {
   return btn;
 }
 
-// ------------------ Collapsible toggle ------------------
-function setupCollapsible(section) {
-  const header = section.querySelector("h2");
-  const content = section.querySelector(".cards, .cards-container");
-  if (!header || !content) return;
-
-  const toggleIcon = document.createElement("span");
-  toggleIcon.className = "toggle-icon";
-  toggleIcon.innerHTML = "➕";
-  header.prepend(toggleIcon);
-
-  header.style.cursor = "pointer";
-  header.addEventListener("click", () => {
-    const isCollapsed = content.style.display === "none";
-    content.style.display = isCollapsed ? "block" : "none";
-    toggleIcon.innerHTML = isCollapsed ? "➖" : "➕";
-  });
-}
-
 // ------------------ Education ------------------
-function addEducationCard(data, skipAnim = false) {
+function addEducationCard(data) {
   const container = document.getElementById("education-cards");
   const card = document.createElement("div");
   card.className = "card";
-  if (!skipAnim) {
-    card.classList.add("enter");
-    setTimeout(() => card.classList.remove("enter"), 200);
-  }
 
   const schoolInput = createInput(data?.school, "School Name", val => card.dataset.school = val);
   const locationInput = createInput(data?.location, "Location", val => card.dataset.location = val);
@@ -159,14 +109,10 @@ function addEducationCard(data, skipAnim = false) {
 }
 
 // ------------------ Experience ------------------
-function addExperienceCard(data, skipAnim = false) {
+function addExperienceCard(data) {
   const container = document.getElementById("experience-cards");
   const card = document.createElement("div");
   card.className = "card";
-  if (!skipAnim) {
-    card.classList.add("enter");
-    setTimeout(() => card.classList.remove("enter"), 200);
-  }
 
   const titleInput = createInput(data?.title, "Job Title", val => card.dataset.title = val);
   const companyInput = createInput(data?.company, "Company", val => card.dataset.company = val);
@@ -176,7 +122,6 @@ function addExperienceCard(data, skipAnim = false) {
   const detailsInput = document.createElement("textarea");
   detailsInput.placeholder = "Details (one per line)";
   detailsInput.value = (data?.details || []).join("\n");
-  detailsInput.rows = 6;
   detailsInput.oninput = (e) => card.dataset.details = e.target.value.split("\n");
 
   card.append(titleInput, companyInput, locationInput, datesInput, detailsInput);
@@ -185,21 +130,13 @@ function addExperienceCard(data, skipAnim = false) {
 }
 
 // ------------------ Projects ------------------
-function addProjectCard(data, skipAnim = false) {
+function addProjectCard(data) {
   const container = document.getElementById("projects-cards");
   const card = document.createElement("div");
   card.className = "card";
-  if (!skipAnim) {
-    card.classList.add("enter");
-    setTimeout(() => card.classList.remove("enter"), 200);
-  }
 
   const titleInput = createInput(data?.title, "Project Title", val => card.dataset.title = val);
-  const descInput = document.createElement("textarea");
-  descInput.placeholder = "Description";
-  descInput.value = data?.description || "";
-  descInput.rows = 4;
-  descInput.oninput = (e) => card.dataset.description = e.target.value;
+  const descInput = createInput(data?.description, "Description", val => card.dataset.description = val);
 
   card.append(titleInput, descInput);
   card.appendChild(createRemoveButton(card));
@@ -207,14 +144,10 @@ function addProjectCard(data, skipAnim = false) {
 }
 
 // ------------------ Skills ------------------
-function addSkillCard(data, skipAnim = false) {
+function addSkillCard(data) {
   const container = document.getElementById("skills-cards");
   const card = document.createElement("div");
   card.className = "card";
-  if (!skipAnim) {
-    card.classList.add("enter");
-    setTimeout(() => card.classList.remove("enter"), 200);
-  }
 
   const categoryInput = createInput(data?.category, "Category", val => card.dataset.category = val);
   const itemsInput = createInput((data?.items || []).join(", "), "Comma-separated skills", val => card.dataset.items = val.split(",").map(s => s.trim()));
@@ -267,6 +200,7 @@ async function generatePDF() {
 
   const API_URL = "https://idea-ai-resumelatex.hf.space/api/generate";
 
+  // Show spinner
   const spinner = document.createElement("div");
   spinner.id = "spinner-overlay";
   spinner.innerHTML = `
@@ -311,27 +245,50 @@ async function generatePDF() {
   }
 }
 
+// ------------------ Collapsible Sections ------------------
+function setupCollapsible(section) {
+  const headerDiv = section.querySelector(".section-header");
+  const content = section.querySelector(".section-content");
+  const icon = headerDiv.querySelector(".toggle-icon"); // must exist in HTML
+  if (!headerDiv || !content || !icon) return;
+
+  // Set initial state
+  if (!content.classList.contains("collapsed")) {
+    content.style.maxHeight = content.scrollHeight + "px";
+    icon.textContent = "−";
+  } else {
+    content.style.maxHeight = "0";
+    icon.textContent = "+";
+  }
+
+  // Toggle on click
+  headerDiv.addEventListener("click", () => {
+    const isCollapsed = content.classList.toggle("collapsed");
+    content.style.maxHeight = isCollapsed ? "0" : content.scrollHeight + "px";
+    icon.textContent = isCollapsed ? "+" : "−";
+  });
+}
+
 // ------------------ Initialize UI ------------------
 window.onload = () => {
-  document.title = "NextGen Resume Lab";
-  document.querySelector("h1").textContent = "🧠 NextGen Resume Lab";
-
+  // Populate default resume data
   document.getElementById("name").value = defaultResumeData.name;
   document.getElementById("email").value = defaultResumeData.contact.email;
   document.getElementById("phone").value = defaultResumeData.contact.phone;
   document.getElementById("website").value = defaultResumeData.contact.website;
 
-  defaultResumeData.education.forEach(e => addEducationCard(e, true));
-  defaultResumeData.experience.forEach(e => addExperienceCard(e, true));
-  defaultResumeData.projects.forEach(p => addProjectCard(p, true));
-  defaultResumeData.skills.forEach(s => addSkillCard(s, true));
+  defaultResumeData.education.forEach(addEducationCard);
+  defaultResumeData.experience.forEach(addExperienceCard);
+  defaultResumeData.projects.forEach(addProjectCard);
+  defaultResumeData.skills.forEach(addSkillCard);
 
+  // Setup collapsible sections
+  document.querySelectorAll(".section").forEach(section => setupCollapsible(section));
+
+  // Attach button handlers
   document.getElementById("generate-btn").onclick = generatePDF;
   document.getElementById("add-education-btn").onclick = () => addEducationCard({});
   document.getElementById("add-experience-btn").onclick = () => addExperienceCard({});
   document.getElementById("add-project-btn").onclick = () => addProjectCard({});
   document.getElementById("add-skill-btn").onclick = () => addSkillCard({});
-
-  // Set up collapsible sections
-  document.querySelectorAll(".section").forEach(setupCollapsible);
 };
