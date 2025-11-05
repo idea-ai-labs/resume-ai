@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NextGen Resume Lab</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 NextGen Resume Lab</h1>
+      <p>Build, Customize & Export Your Professional Resume.</p>
+    </header>
+
+    <!-- Basic Info -->
+    <section class="section" id="basic-info-section">
+      <div class="section-header">
+        <h2><span class="toggle-icon">−</span> Basic Info</h2>
+      </div>
+      <div class="section-content">
+        <input id="name" placeholder="Full Name" />
+        <input id="email" placeholder="Email" />
+        <input id="phone" placeholder="Phone" />
+        <input id="website" placeholder="Website / LinkedIn" />
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="section" id="education-section">
+      <div class="section-header">
+        <h2><span class="toggle-icon">−</span> Education</h2>
+      </div>
+      <div class="section-content">
+        <div id="education-cards" class="cards"></div>
+        <button id="add-education-btn" class="add-btn">+ Add Education</button>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="section" id="experience-section">
+      <div class="section-header">
+        <h2><span class="toggle-icon">−</span> Experience</h2>
+      </div>
+      <div class="section-content">
+        <div id="experience-cards" class="cards"></div>
+        <button id="add-experience-btn" class="add-btn">+ Add Experience</button>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="section" id="projects-section">
+      <div class="section-header">
+        <h2><span class="toggle-icon">−</span> Projects</h2>
+      </div>
+      <div class="section-content">
+        <div id="projects-cards" class="cards"></div>
+        <button id="add-project-btn" class="add-btn">+ Add Project</button>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section class="section" id="skills-section">
+      <div class="section-header">
+        <h2><span class="toggle-icon">−</span> Skills</h2>
+      </div>
+      <div class="section-content">
+        <div id="skills-cards" class="cards"></div>
+        <button id="add-skill-btn" class="add-btn">+ Add Skill</button>
+      </div>
+    </section>
+
+    <!-- Actions -->
+
+  <div class="actions">
+  <label for="upload-resume" class="upload-label">📄 Upload Resume</label>
+  <input type="file" id="upload-resume" accept=".pdf,.doc,.docx" hidden />
+  <span id="file-name" class="file-name"></span>
+
+  <button id="toggle-all-btn" class="add-btn">Expand All</button>
+  <button id="generate-btn" class="generate-btn">Generate PDF</button>
+  <button id="reset-btn" class="reset-btn">Reset to Default</button>
+  </div>
+    <!-- Debug -->
+    <section class="debug">
+      <h3>Debug Log</h3>
+      <textarea id="log-box" readonly></textarea>
+    </section>
+  </div>
+
+  <script src="main.js?v=<%= Date.now() %>"></script>
+  <script src="resumeParser.js?v=<%= Date.now() %>"></script>
+  <!-- PDF Parser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- DOCX Parser -->
+  <script src="https://unpkg.com/mammoth@1.6.0/mammoth.browser.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const footer = document.createElement("div");
+    footer.style.position = "fixed";
+    footer.style.bottom = "6px";
+    footer.style.right = "10px";
+    footer.style.fontSize = "12px";
+    footer.style.fontFamily = "monospace";
+    footer.style.color = "#777";
+    footer.style.opacity = "0.8";
+    footer.style.zIndex = "9999";
+    footer.textContent = `Loaded: ${new Date().toLocaleString()}`;
+    document.body.appendChild(footer);
+    console.log("✅ Page loaded at:", new Date().toLocaleString());
+  });
+</script>
+</body>
+</html>
