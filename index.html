@@ -71,12 +71,16 @@
     </section>
 
     <!-- Actions -->
-<div class="actions">
-  <input type="file" id="upload-resume" accept=".pdf,.doc,.docx" />
+
+  <div class="actions">
+  <label for="upload-resume" class="upload-label">📄 Upload Resume</label>
+  <input type="file" id="upload-resume" accept=".pdf,.doc,.docx" hidden />
+  <span id="file-name" class="file-name"></span>
+
   <button id="toggle-all-btn" class="add-btn">Expand All</button>
   <button id="generate-btn" class="generate-btn">Generate PDF</button>
   <button id="reset-btn" class="reset-btn">Reset to Default</button>
-</div>
+  </div>
     <!-- Debug -->
     <section class="debug">
       <h3>Debug Log</h3>
