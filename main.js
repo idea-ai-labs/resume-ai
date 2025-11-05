@@ -416,6 +416,19 @@ function collapseAllSectionsOnLoad() {
 
 // ------------------ Init ------------------
 window.onload = () => {
+  
+  // 🔹 File upload label handler
+  const uploadInput = document.getElementById("upload-resume");
+  const fileNameSpan = document.getElementById("file-name");
+
+  uploadInput.addEventListener("change", function() {
+    if (this.files && this.files.length > 0) {
+      fileNameSpan.textContent = `Uploaded: ${this.files[0].name}`;
+    } else {
+      fileNameSpan.textContent = "";
+    }
+  });
+
   const resumeData = loadFromLocalStorage() || defaultResumeData;
   renderResume(resumeData);
 
