@@ -99,36 +99,68 @@ function loadFromLocalStorage() {
 }
 
 // ------------------ UI Helpers ------------------
-function createInput(value, placeholder, onChange) {
+
+// ------------------ Input / Textarea Helpers ------------------
+function createInput(value = "", placeholder = "", onInput) {
   const input = document.createElement("input");
-  input.value = value || "";
+  input.type = "text";
   input.placeholder = placeholder;
-  input.oninput = e => { onChange(e.target.value); saveToLocalStorage(); };
+  input.value = value || "";
+  input.addEventListener("input", () => {
+    if (onInput) onInput(input.value);
+    saveToLocalStorage();
+  });
+  input.style.marginBottom = "6px";
   return input;
 }
 
-function createTextarea(value, placeholder, onChange) {
+function createTextarea(value = "", placeholder = "", onInput) {
   const textarea = document.createElement("textarea");
-  textarea.value = value || "";
   textarea.placeholder = placeholder;
-  textarea.oninput = e => { onChange(e.target.value); saveToLocalStorage(); };
+  textarea.value = value || "";
+  textarea.addEventListener("input", () => {
+    if (onInput) onInput(textarea.value);
+    saveToLocalStorage();
+  });
+  textarea.style.marginBottom = "6px";
   return textarea;
 }
 
+// ------------------ Remove Button ------------------
 function createRemoveButton(card) {
   const btn = document.createElement("button");
-  btn.type = "button";
-  btn.textContent = "Remove";
+  btn.textContent = "🗑️ Remove";
   btn.className = "remove-btn";
-  btn.onclick = () => {
+  btn.addEventListener("click", () => {
     card.remove();
+    updateMoveButtons(card.parentNode);
     saveToLocalStorage();
-    adjustSectionHeight(card.closest(".section"));
-  };
+  });
   return btn;
 }
 
-// --- Reordering Helpers ---
+// ------------------ Move Buttons ------------------
+function createMoveButtons(card) {
+  const container = document.createElement("div");
+  container.className = "move-btn-container";
+
+  const upBtn = document.createElement("button");
+  upBtn.textContent = "⬆️";
+  upBtn.className = "move-up";
+  upBtn.title = "Move Up";
+  upBtn.addEventListener("click", () => moveCardUp(card));
+
+  const downBtn = document.createElement("button");
+  downBtn.textContent = "⬇️";
+  downBtn.className = "move-down";
+  downBtn.title = "Move Down";
+  downBtn.addEventListener("click", () => moveCardDown(card));
+
+  container.append(upBtn, downBtn);
+  return container;
+}
+
+// ------------------ Card Reordering Logic ------------------
 function moveCardUp(card) {
   const prev = card.previousElementSibling;
   if (prev && prev.classList.contains("card")) {
@@ -147,7 +179,6 @@ function moveCardDown(card) {
   }
 }
 
-// Refresh up/down button visibility
 function updateMoveButtons(container) {
   const cards = Array.from(container.querySelectorAll(".card"));
   cards.forEach((card, index) => {
