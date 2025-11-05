@@ -180,6 +180,31 @@ button {
   background-color: #218838;
 }
 
+.upload-label {
+  background-color: #0078d7;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: inline-block;
+  transition: background-color 0.2s;
+  margin-right: 8px;
+}
+
+.upload-label:hover {
+  background-color: #005baa;
+}
+
+.file-name {
+  font-size: 0.9rem;
+  color: #555;
+  margin-left: 10px;
+  font-style: italic;
+  white-space: nowrap;
+}
+
 /* =========================================
    Debug Log Area
 ========================================= */
