@@ -122,6 +122,17 @@ header p {
   margin-bottom: 6px;
 }
 
+.card-controls {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap; /* wrap buttons on small screens */
+  margin-top: 6px;
+}
+.card-controls button {
+  flex: 1; /* optional: makes buttons equal width on mobile */
+  min-width: 60px; /* ensures small buttons are tappable */
+}
+
 /* Larger textareas for Experience & Projects */
 #experience-cards textarea,
 #projects-cards textarea {
