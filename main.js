@@ -191,6 +191,38 @@ function updateMoveButtons(container) {
   });
 }
 
+function createCardControls(card) {
+  const controls = document.createElement("div");
+  controls.className = "card-controls"; // we'll style this in CSS
+  controls.style.display = "flex";
+  controls.style.gap = "6px"; // space between buttons
+
+  const removeBtn = document.createElement("button");
+  removeBtn.type = "button";
+  removeBtn.textContent = "Remove";
+  removeBtn.className = "remove-btn";
+  removeBtn.onclick = () => {
+    card.remove();
+    updateMoveButtons(card.parentNode);
+    saveToLocalStorage();
+  };
+
+  const upBtn = document.createElement("button");
+  upBtn.type = "button";
+  upBtn.textContent = "↑";
+  upBtn.className = "move-up";
+  upBtn.onclick = () => moveCardUp(card);
+
+  const downBtn = document.createElement("button");
+  downBtn.type = "button";
+  downBtn.textContent = "↓";
+  downBtn.className = "move-down";
+  downBtn.onclick = () => moveCardDown(card);
+
+  controls.append(removeBtn, upBtn, downBtn);
+  return controls;
+}
+
 function adjustSectionHeight(section) {
   const content = section.querySelector(".section-content");
   if (!content || content.classList.contains("collapsed")) return;
@@ -212,9 +244,10 @@ function addEducationCard(data) {
   const datesInput = createInput(data?.dates, "Dates", val => card.dataset.dates = val);
 
   card.append(schoolInput, locationInput, degreeInput, datesInput);
-  card.appendChild(createRemoveButton(card));
+  //card.appendChild(createRemoveButton(card));
     // Add Move Up / Down Buttons
-  card.appendChild(createMoveButtons(card));
+  //card.appendChild(createMoveButtons(card));
+  card.appendChild(createCardControls(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
@@ -234,9 +267,10 @@ function addExperienceCard(data) {
   const detailsInput = createTextarea((data?.details || []).join("\n"), "Details (one per line)", val => card.dataset.details = val.split("\n"));
 
   card.append(titleInput, companyInput, locationInput, datesInput, detailsInput);
-  card.appendChild(createRemoveButton(card));
+  //card.appendChild(createRemoveButton(card));
     // Add Move Up / Down Buttons
-  card.appendChild(createMoveButtons(card));
+  //card.appendChild(createMoveButtons(card));
+  card.appendChild(createCardControls(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
@@ -255,9 +289,10 @@ function addProjectCard(data) {
   const descInput = createTextarea(data?.description, "Description", val => card.dataset.description = val);
 
   card.append(titleInput, techInput, datesInput, descInput);
-  card.appendChild(createRemoveButton(card));
+  //card.appendChild(createRemoveButton(card));
     // Add Move Up / Down Buttons
-  card.appendChild(createMoveButtons(card));
+  //card.appendChild(createMoveButtons(card));
+  card.appendChild(createCardControls(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
@@ -273,9 +308,10 @@ function addSkillCard(data) {
   const card = document.createElement("div");
   card.className = "card";
   card.append(categoryInput, itemsInput);
-  card.appendChild(createRemoveButton(card));
+  //card.appendChild(createRemoveButton(card));
     // Add Move Up / Down Buttons
-  card.appendChild(createMoveButtons(card))
+  //card.appendChild(createMoveButtons(card))
+  card.appendChild(createCardControls(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
