@@ -213,6 +213,8 @@ function addEducationCard(data) {
 
   card.append(schoolInput, locationInput, degreeInput, datesInput);
   card.appendChild(createRemoveButton(card));
+    // Add Move Up / Down Buttons
+  card.appendChild(createMoveButtons(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
@@ -233,6 +235,8 @@ function addExperienceCard(data) {
 
   card.append(titleInput, companyInput, locationInput, datesInput, detailsInput);
   card.appendChild(createRemoveButton(card));
+    // Add Move Up / Down Buttons
+  card.appendChild(createMoveButtons(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
@@ -252,6 +256,8 @@ function addProjectCard(data) {
 
   card.append(titleInput, techInput, datesInput, descInput);
   card.appendChild(createRemoveButton(card));
+    // Add Move Up / Down Buttons
+  card.appendChild(createMoveButtons(card));
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
@@ -268,6 +274,8 @@ function addSkillCard(data) {
   card.className = "card";
   card.append(categoryInput, itemsInput);
   card.appendChild(createRemoveButton(card));
+    // Add Move Up / Down Buttons
+  card.appendChild(createMoveButtons(card))
   container.appendChild(card);
   updateMoveButtons(container);
   adjustSectionHeight(container.closest(".section"));
